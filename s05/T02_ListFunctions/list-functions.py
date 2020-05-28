@@ -1,4 +1,4 @@
-#   Progama que aplica una serie de funciones 
+#   Programa que aplica una serie de funciones
 #   a una lista de nombres de amigos.
 
 names = []
@@ -7,11 +7,13 @@ end = False # fin de ingreso de nombres
 
 print ('\nHola, ingresa una lista de tus mejores amigos. Usar sólo minúsculas porfa!')
 while not end:
-    userInput = input('Ingrese un nombre a la lista o \'z\' para finalizar: ')
+    userInput = input('Agregar nombre o digita \'z\' para finalizar: ')
     if  userInput == 'z':
         end = True
     else: 
         names.append(userInput)
+
+print('\nAsí va la lista: ', names)
 
 if len(names) > 0:
     # Imprimir la lista ordenada ascendentemente 
@@ -39,11 +41,13 @@ if len(names) > 0:
         print('\nNo tienes amigos llamados Juan')
 
     # Sacar a alguien de la lista
-    print('\nPara SACAR a alguien de la lista digita su numero, ')
+    print('\nPara SACAR a alguien de la lista (Ascendente) digita su numero, ')
     pop_name = int(input('O bien digita 0 (cero) si no deseas sacar a nadie: '))
 
     if pop_name >= 1 and pop_name < len(names):
         names.pop(pop_name-1)
+    elif pop_name == 0: 
+        print('\nElegiste Cero, la lista queda igual...')
     else:
         print('\nLa opción ' + str(pop_name) + ' no es válida. ')
 
