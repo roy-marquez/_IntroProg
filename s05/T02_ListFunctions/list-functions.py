@@ -1,9 +1,7 @@
 #   Programa que aplica una serie de funciones
 #   a una lista de nombres de amigos.
-
 names = []
 end = False # fin de ingreso de nombres
-    
 
 print ('\nHola, ingresa una lista de tus mejores amigos. Usar sólo minúsculas porfa!')
 while not end:
