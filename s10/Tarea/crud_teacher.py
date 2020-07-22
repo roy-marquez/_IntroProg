@@ -1,5 +1,6 @@
-from user_interface import *
-from business_logic_layer import Teacher
+from user_interface import prop_update
+from user_interface import ask_course
+from entities import Teacher
 
 ''' Mantenimiento de profesores '''
 
@@ -12,12 +13,6 @@ def create_teacher(id_num,  name, email, course, teachers):
 # Leer profesor
 def read_teacher(id_num, teachers):
     '''regresa una cadena con los datos del profe: nombre y curso'''
-    # info=None
-    # if person_exist(id_num, teachers):
-    #     i = index_of_person(id_num, teachers)
-    #     info = 'Datos del profesor: \n\t'
-    #     info += str(teachers[i])
-    # return info
 
     for t in teachers:
         if t.id_num == id_num:
@@ -25,32 +20,32 @@ def read_teacher(id_num, teachers):
                 >> Datos del profesor
                     Id Num: {}
                     Nombre: {}
-                    email: {}
-                    Curso: {}
-
+                    Email:  {}
+                    Curso:  {}
             '''.format(t.id_num, t.name, t.email, t.course))
 
 #Actualizar profesor
-def update_teacher(id_num, teachers):
+def update_teacher(id_num, teachers, courses):
+    '''Actualiza los datos de un profesor'''
     found= False
     for t in teachers:
         if t.id_num == id_num:
             found = True
-            print('>>Nombre actual: ', t.name)
+            print('\n>>Nombre actual: ', t.name)
             if (prop_update('nombre')):
                 t.name = input('Ingrese nuevo nombre del profesor: ')
 
-            print('>>Email actual: ', t.email)
+            print('\n>>Email actual: ', t.email)
             if (prop_update('email')):
                 t.email = input('Ingrese nuevo email del profesor: ')
             
-            print('>>Curso actual: ', t.course)
-            if (prop_update('course')):
-                t.course = input('Ingrese nuevo curso del profesor: ')
+            print('\n>>Curso actual: ', t.course)
+            if (prop_update('curso')):
+                t.course = ask_course(courses)
             
-            print ('Actualización completa... ', read_teacher(id_num, teachers))    
+        print ('\nActualización completa... ', read_teacher(id_num, teachers))    
     
-    if (not found):
+    if (found != True):
         print('No se encontró ningun profesor con el ID: ' + id_num)
              
 # Eliminar profesor
@@ -65,6 +60,16 @@ def delete_teacher(id_num, teachers):
 
     if found:
        teachers.pop(index)
-       print('Se eliminó al prof. con Id: ', id_num)
+       return print('Se eliminó al prof. con Id: ', id_num)
     else:
-       print('No se encontro prof. con Id: ', id_num)
+       return print('No se encontro prof. con Id: ', id_num)
+
+# Rertonar info de todos los profes de la lista en un string
+def teachers_to_str(teachers):
+    count = 1
+    t_str='' # almacena toda la info de todos los prof 
+    for t in teachers:
+        t_str += '['+str(count)+']'+('+'*30)+'\n'
+        t_str += '\n'+ str(t) + '\n'
+        count+=1
+    return t_str

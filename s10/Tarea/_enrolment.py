@@ -236,7 +236,7 @@ def teachers_menu():
 
 
 
-def option_menu(person=''):
+def option_menu(literal=''):
     '''Despliega las opciones de mantenimientos disponibles y devuelve '''
     print('''\n=============== Mantenimiento {0} =============== \n
     Seleccione una opción:
@@ -246,14 +246,14 @@ def option_menu(person=''):
     \t4. Eliminar {0}
     \t5. Imprimir lista.
     \t6. SALIR!
-    '''.format(str(person))  
+    '''.format(str(person)))  
     opcion = input("Digíte una opción: ")
     
     #Selecciona solo caracter numericos por medio de valores ascii
     if len(opcion) == 1:
         opt = ord(opcion)
         if opt >= 49 and opt<= 54:
-            return opt
+            return int(option)
         else:
             print ('\n>>> ERROR! OPCION NO VALIDA.\n')
             option_menu()
