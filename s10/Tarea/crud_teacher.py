@@ -5,10 +5,11 @@ from entities import Teacher
 ''' Mantenimiento de profesores '''
 
 # Crear profesor
-def create_teacher(id_num,  name, email, course, teachers):
+def create_teacher(id_num,  name, email, course, teachers, teachers_names):
     '''crea y agrega un prof. a la lista de profes que recibe como parametro'''
     teacher = Teacher(id_num, name, email, course)
     teachers.append(teacher)
+    teachers_names.append(name)
 
 # Leer profesor
 def read_teacher(id_num, teachers):
@@ -49,7 +50,7 @@ def update_teacher(id_num, teachers, courses):
         print('No se encontró ningun profesor con el ID: ' + id_num)
              
 # Eliminar profesor
-def delete_teacher(id_num, teachers):
+def delete_teacher(id_num, teachers,teachers_names):
     found = False
     index = 0
     for t in teachers:
@@ -60,6 +61,7 @@ def delete_teacher(id_num, teachers):
 
     if found:
        teachers.pop(index)
+       teachers_names [index]
        return print('Se eliminó al prof. con Id: ', id_num)
     else:
        return print('No se encontro prof. con Id: ', id_num)

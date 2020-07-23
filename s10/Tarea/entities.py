@@ -39,22 +39,27 @@ class Group:
     def get_students_names(self):
         '''Regresa un string con los nombres de todos los estudiantes de este grupo'''
         names = ''
-        for i in self.students:
-            names += '\t' + i +'.'+ self.students[i].name + '\n'
+        for i in range(0, len(self.students)):
+            names += '\t' + str(i) +'.'+ str(self.students[i].name) + '\n'
         return names
 
     def __str__(self):
         '''Regresa un string de toda la información del grupo'''
-        info = 'Curso: {}'.format(self.course) + '\n'
+        info = '\nCurso: {}'.format(self.course) + '\n'
         info += 'Grupo Id: {}'.format(self.id_group) + '\n'
-        info += 'Profesor: {}'.format(self.teacher) + '\n'
+        info += 'Dia de la semana: {}'.format(self.week_day) + '\n'
+        if self.teacher != None:
+            info += 'Profesor: {}'.format(self.teacher.name) + '\n'
+        else:
+            info += 'Profesor: No Asignado' + '\n'
         info += 'Estudiantes: \n {}'.format(self.get_students_names() + '\n')
         return info
     
     def set_teacher(self, teacher):
         '''Permite asignar el profesor que recibe como parámetro a este grupo'''
         self.teacher = teacher
-        print ('\n Se asigna {0} como profesor del Grupo {1} del Curso de {2}.'.format(teacher.name, self.id_group, self.course))
+        #print ('\n Se asigna {0} como profesor del Grupo {1} del Curso de {2}.'.format(self.teacher.name, self.id_group, self.course))
+        print('Se asignó profesor al grupo.')
     
     def add_student(self, student):
         '''Permite agregar el estudiante que recibe por parametro a este grupo'''
@@ -68,9 +73,8 @@ class Group:
     
 
 ## Funciones generales
-
 def person_exist(id_num, people_list):
-    ''' Determina si una persona (prof o estud) existe en una lista 
+    ''' Determina si una persona (prof o estudiante) existe en una lista 
         por medio de la prop. id_num, devuelve True si la encuentra
     '''
     for p in people_list:
@@ -98,4 +102,3 @@ def exist_group(course, id_group, groups):
                 return True
     return False     
     
-

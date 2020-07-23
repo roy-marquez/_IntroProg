@@ -1,4 +1,5 @@
 ''' Módulo que define clases y funciones de la interfaz de usuario '''
+import os
 
 TITLE_LONG = 60
 
@@ -101,16 +102,39 @@ def ask_course(courses):
 
 def ask_letter(allowed_chars):
     '''funcion que solicita y retorna el group_id(letter) seleccionado'''
+    
     valid_selected_char = False
     while (valid_selected_char != True):
+        
         print('Las id disponibles para el curso son: \n')
         print ('\t'+ str(allowed_chars))
-        selected_char = input('Seleccione la letra: ').upper()
+        selected_char = input('\nSeleccione un identificador (letra): ').upper()
         for c in allowed_chars:
             if c == selected_char:
                 valid_selected_char = True
                 break
+
+        if not valid_selected_char:
+            clear()
+            print (f'>>> ERROR!, "{selected_char}" NO es una opción válida. \n')
     return selected_char
 
-    
+def ask_weekday(days):
+    '''función que solicita y retorna un día de la semana válido'''
+    print('Los días disponibles para el curso son: \n')
+    i = get_option(days)-1
+    return days[i]
+
+def ask_teacher(teachers, teachers_names):
+    '''funcion que se solicita elegir un profesor de la lista de profesores para asignarlo a un grupo'''
+    print('Los profesores disponibles son: ')
+    i = get_option(teachers_names)-1
+    return teachers[i]
+
+def clear():
+    '''Limpia la pantalla'''
+    return os.system('cls' if os.name == 'nt' else clear)
+
+def pause():
+    return input('Presione cualquier tecla para continuar...')
     

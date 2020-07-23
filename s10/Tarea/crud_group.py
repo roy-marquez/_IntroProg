@@ -1,9 +1,14 @@
 from user_interface import prop_update
 from user_interface import ask_course
+from user_interface import ask_teacher
+from user_interface import ask_id
+from user_interface import get_option
+from entities import index_of_person
 from entities import Group
 
 
 ''' Mantenimiento de profesores '''
+
 
 # Crear un grupo
 def create_group(course, id_group, week_day, groups, teacher=None ):
@@ -12,59 +17,76 @@ def create_group(course, id_group, week_day, groups, teacher=None ):
     key = course + '-' + id_group
     groups[key] = group
 
-# Leer profesor
-def read_group(course, id_group, groups):
-    ''' recibe un diccionario de groupos y una key con el formato Nombre-X
+
+# Leer grupo
+def read_group(key, groups):
+    ''' recibe un diccionario de grupos y una key con el formato Curso-X
     regresa una cadena con los datos del grupo (si existe) '''
     if len(groups) > 0:
-        for g in groups:
-            if g.course == course:
-                if g.id_group == id_group:
-                    return str(g)
-                else:
-                    '>>>ERROR!: No se encotró ningun grupo con ese ID'
-            else:
-                return '>>>ERROR!: No se encontró ningun grupo de ese CURSO'
+        group = groups.get(key)
+        return str(group)
     else:
         return '>>>ERROR!: No hay grupos.'
 
 #Actualizar grupo
-def update_group(course, id_group, groups):
-    '''Actualiza los datos de un profesor'''
-    found= False
-    for g in groups:
-        if g.course == course:
-            if g.id_group == id_group:
-                found = True
-                print('\n>>Dia de la semana actual: ', g.weekday)
-                if (prop_update('día de la semana')):
-                    g.weekday = input('Ingrese nuevo dia de la semana: ')
-
-                print('\n>>Nombre del profesor actual: ', g.teacher)
-                if (prop_update('profesor')):
-                    g.profesor = input('Ingrese el nombre del nuevo profesor: ')
-                                
-        print ('\nActualización completa... ', read_group(course, id_group, groups))    
+def update_group(key, groups, teachers, teachers_names, students):
+    '''Actualiza los datos de un grupo: '''
+    group = groups.get(key)
     
-    if (found != True):
-        print('No se encontró grupo del curso {0} con el ID: {1}'.format(course, id_group))
-             
-# Eliminar profesor
-def delete_teacher(course, id_group, groups):
-    found = False
-    key = ''
-    for g in groups:
-        if g.course == course:
-            if t.id_group == id_group:
-                found = True
-                key = course+'-'+id_group
-                break
+    print('\n>>Dia de la semana actual: ', group.week_day)
+    if (prop_update('día de la semana')):
+        group.week_day = input('Ingrese nuevo dia de la semana: ')
 
-    if found:
-       group.pop(key)
-       return print('Se eliminó al grupo: ', key)
+    if group.teacher == None:
+        print ('\nEste grupo no tiene Prof. asignado...')
+        if len(teachers)>0:
+            if (prop_update('Profesor asignado')):
+                teacher = ask_teacher(teachers, teachers_names)
+                group.set_teacher(teacher)
+        else:
+            print('\nSin embargo, la lista de profesores esta vacía.') 
+            print('\nDebe agregar un profesor a la lista previamente para poder asignarlo a este grupo.''')
     else:
-       return print('No se encontró grupo del curso {0} con el ID: {1}'.format(course, id_group))
+        print('\n>>Nombre del profesor actual: ', group.teacher.name)
+        if (prop_update('profesor')):
+            teacher = ask_teacher(teachers, teachers_names)
+            group.set_teacher(teacher)
+    
+    print('\n>>Estudiantes : ')
+    print(group.students)
+    if (prop_update('lista de estudiantes')):
+        print("Que desea hacer ?\n")
+        opt = get_option(['Agregar Estudiante', 'Eliminar Estudiante', 'Salir...'])
+        while opt !=3: 
+            if opt == 1:
+                if len(students)>0:
+                    student_id = ask_id()
+                    i = index_of_person(student_id, students)
+                    group.add_student(students[i])
+                    #print('\tSe agregó al estudiante, con id: {}'.format(student_id))
+                else:
+                    print('Aun no hay estudiantes registrados en la lista general de estudiantes.')
+            elif opt == 2:
+                if len(group.students)>0:
+                    student_id = ask_id()
+                    i = index_of_person(student_id, group.students)
+                    group.del_student(group.students[i])
+                else:
+                    print('La lista de estudiantes del presente grupo esa vacía!')
+                    print('No es posible borrar a un estudiante')
+            
+            print("\nQué desea hacer ?\n")
+            opt = get_option(['Agregar Estudiante', 'Eliminar Estudiante', 'Salir...'])
+                            
+    return ('\nActualización completa... \n' + read_group(key, groups))    
+    
+             
+# Eliminar grupo
+def delete_group(key, groups, groups_labels):
+    '''Elimina un grupo del diccionario de grupos con base en el curso y el identificador'''
+    groups.pop(key)
+    groups_labels.remove(key)
+    return print('Se eliminó al grupo: ', key)
         
 
 # Retorna info de todos grupos de la lista en un string
@@ -76,3 +98,4 @@ def groups_to_str(groups):
         g_str += '\n'+ str(g) + '\n'
         count+=1
     return g_str
+

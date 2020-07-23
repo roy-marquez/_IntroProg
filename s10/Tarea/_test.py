@@ -63,5 +63,5 @@ letras_copy = letras.copy()
 # print('Imprimiento letras', letras)
 
 # print ('Imprimiendo letras_copy', letras_copy)
-print('Seleccion de Grouo_id >> ')
-print(ask_letter(letras))
+print('Selección de Group_id >> ')
+print(ask_letter(letras).center(60))
