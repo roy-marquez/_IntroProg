@@ -3,12 +3,11 @@ from user_interface import ask_course
 from user_interface import ask_teacher
 from user_interface import ask_id
 from user_interface import get_option
+from entities import person_exist
 from entities import index_of_person
 from entities import Group
 
-
 ''' Mantenimiento de profesores '''
-
 
 # Crear un grupo
 def create_group(course, id_group, week_day, groups, teacher=None ):
@@ -16,7 +15,7 @@ def create_group(course, id_group, week_day, groups, teacher=None ):
     group = Group(course, id_group, week_day, teacher)
     key = course + '-' + id_group
     groups[key] = group
-
+    return f'Grupo {key} creado.'
 
 # Leer grupo
 def read_group(key, groups):
@@ -53,27 +52,31 @@ def update_group(key, groups, teachers, teachers_names, students):
             group.set_teacher(teacher)
     
     print('\n>>Estudiantes : ')
-    print(group.students)
+    print(group.get_students_names())
     if (prop_update('lista de estudiantes')):
-        print("Que desea hacer ?\n")
+        print("\nQue desea hacer ?\n")
         opt = get_option(['Agregar Estudiante', 'Eliminar Estudiante', 'Salir...'])
         while opt !=3: 
             if opt == 1:
                 if len(students)>0:
                     student_id = ask_id()
-                    i = index_of_person(student_id, students)
-                    group.add_student(students[i])
-                    #print('\tSe agregó al estudiante, con id: {}'.format(student_id))
+                    if person_exist(student_id, students):
+                        i = index_of_person(student_id, students)
+                        group.add_student(students[i])
+                        #print('\tSe agregó al estudiante, con id: {}'.format(student_id))
+                    else:
+                        print('\t>>>Error!, No se encontró un estudiante, con id: {}'.format(student_id))
+
                 else:
-                    print('Aun no hay estudiantes registrados en la lista general de estudiantes.')
+                    print('Aún no hay estudiantes registrados en la lista general de estudiantes.')
             elif opt == 2:
-                if len(group.students)>0:
+                if len(group.g_students)>0:
                     student_id = ask_id()
-                    i = index_of_person(student_id, group.students)
-                    group.del_student(group.students[i])
+                    i = index_of_person(student_id, group.g_students)
+                    group.del_student(group.g_students[i])
                 else:
-                    print('La lista de estudiantes del presente grupo esa vacía!')
-                    print('No es posible borrar a un estudiante')
+                    print('>>>Error!, La lista de estudiantes del presente grupo esa vacía!')
+                    print('No es posible borrar estudiante')
             
             print("\nQué desea hacer ?\n")
             opt = get_option(['Agregar Estudiante', 'Eliminar Estudiante', 'Salir...'])

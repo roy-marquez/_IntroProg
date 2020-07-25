@@ -10,7 +10,7 @@ class Person:
         self.course = course
 
     def __str__(self):
-        info = 'Rol:    {}'.format(self.rol) + '\n'
+        info = 'Rol:   {}'.format(self.rol) + '\n'
         info += 'Id:    {}'.format(self.id_num) + '\n'
         info += 'Nombre:{}'.format(self.name) + '\n'
         info += 'Email: {}'.format(self.email) + '\n'
@@ -27,20 +27,22 @@ class Student(Person):
 
 class Group:
     '''Representa un grupo: Curso, profesor y lista de estudiantes '''
-    teacher = None
-    students = []
+    #teacher = None
+    #g_students = []
     
     def __init__(self, course, id_group, week_day,  teacher = None):
         self.course = course
         self.id_group = id_group
         self.week_day = week_day
         self.teacher = teacher
-    
+        self.g_students = list()
+        self.teacher = None
+
     def get_students_names(self):
         '''Regresa un string con los nombres de todos los estudiantes de este grupo'''
         names = ''
-        for i in range(0, len(self.students)):
-            names += '\t' + str(i) +'.'+ str(self.students[i].name) + '\n'
+        for i in range(0, len(self.g_students)):
+            names += '\t[' + str(i+1) +']. Id:'+ str(self.g_students[i].id_num) +' => ' + str(self.g_students[i].name) + '\n'
         return names
 
     def __str__(self):
@@ -63,12 +65,12 @@ class Group:
     
     def add_student(self, student):
         '''Permite agregar el estudiante que recibe por parametro a este grupo'''
-        self.students.append(student)
+        self.g_students.append(student)
         print ('\n Se agregó {0}, a la lista de estudiantes del Grupo {1} del Curso de {2}.'.format(student.name,self.id_group, self.course))
     
     def del_student(self, student):
         '''Permite eliminar el estudiante que recibe por parametro de la lista de estudiantes de este grupo'''
-        self.students.append(student)
+        self.g_students.remove(student)
         print ('\n Se eliminó {0}, a la lista de estudiantes del Grupo {1} del Curso de {2}.'.format(student.name,self.id_group, self.course))
     
 
@@ -80,19 +82,15 @@ def person_exist(id_num, people_list):
     for p in people_list:
         if (p.id_num == id_num):
             return True
-        else:
-            return False
+    return False
 
 def index_of_person(id_num, people_list):
-    ''' Si una persona existe en una lista devuelve el indice (entero positivo) donde se encuentra
-        de lo contrario devuelve -1.
+    ''' Si una persona existe en una lista devuelve el indice (entero positivo) donde se encuentra.
     '''
     if person_exist(id_num, people_list):
-        for i in range(len(people_list)):
-            if id_num == people_list[i].id_num:
-                return i
-    else:
-        return -1
+        for p in people_list:
+            if (p.id_num == id_num):
+                return people_list.index(p)
 
 def exist_group(course, id_group, groups):
     ''' Determina si existe un grupo con del course y el id_group en el diccionario ingresado'''
@@ -101,4 +99,3 @@ def exist_group(course, id_group, groups):
             if g.id_group == id_group:
                 return True
     return False     
-    

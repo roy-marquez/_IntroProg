@@ -1,4 +1,3 @@
-from user_interface import get_option_from
 from user_interface import *
 from data import *
 from crud_teacher import *
@@ -6,10 +5,11 @@ from crud_student import *
 from crud_group import *
 
 main_menu_options = [
-    'Mantenimiento Profesores',
-    'Mantenimiento Estudiantes',
-    'Mantenimiento Grupos',
-    'Salir del sistema.'
+    '➕ CRUD Profesores ',
+    '➕ CRUD Estudiantes ',
+    '➕ CRUD Grupos ',
+    '✅ Generar Datos de Prueba ',
+    '❌ Salir del sistema '
 ]
 
 #Lista de opciones de los menu de profesores y estudiantes
@@ -31,11 +31,9 @@ menu_options_groups = [
     'Salir'
 ]
 
-
-# Constantes de formateo titulos
+# Constantes de formateo títulos
 LONG = 60
 CHAR = '=' 
-
 
 #Sets de letras para grupos
 free_letters = None
@@ -44,7 +42,7 @@ groups_labels = created_groups_labels
 
 
 def menu_teachers():
-    teachers_opt = get_option_from(menu_options, 'Mantenimiento de profes')
+    teachers_opt = get_option_from(menu_options, '[ Mantenimiento de profes ]')
     
     if teachers_opt == 1:
         print (new_title('< Agregar profe >', LONG, CHAR, True))
@@ -77,7 +75,7 @@ def menu_teachers():
         start()
 
 def menu_students():
-    student_opt = get_option_from(menu_options, 'Mantenimiento de estudiantes')
+    student_opt = get_option_from(menu_options, '[ Mantenimiento de estudiantes ]')
     
     if student_opt == 1:
         print (new_title('< Agregar estudiante >', LONG, CHAR))
@@ -111,7 +109,7 @@ def menu_students():
         start()
 
 def menu_groups():
-    group_opt = get_option_from(menu_options_groups, 'Mantenimiento de Grupos')
+    group_opt = get_option_from(menu_options_groups, '[ Mantenimiento de Grupos ]')
     
     if group_opt == 1:
         print (new_title('< Crear Grupo >', LONG, CHAR))
@@ -164,7 +162,7 @@ def menu_groups():
             print ('Los grupos actuales son: ') 
             i = get_option( groups_labels)-1
             key = groups_labels[i]
-            print(delete_group(key, groups, groups_labels))
+            delete_group(key, groups, groups_labels)
         else:
             print('>>> No existen grupos creados. ')
             pause()
@@ -174,8 +172,11 @@ def menu_groups():
         print ('Regresando al menu principal...')
         start()
 
+# Funcion de arranque del sistema
 def start():
-    main_opt = get_option_from(main_menu_options, "Menu Principal")
+    clear()
+    print(new_title('[ Sistema de Matricula ]', 60, '■', True))
+    main_opt = get_option_from(main_menu_options, "[ Menu Principal ]")
     if main_opt == 1:
         menu_teachers()
     
@@ -184,8 +185,60 @@ def start():
     
     elif main_opt == 3:
         menu_groups()
+    
+    elif main_opt == 4:
+        generate_data()
+        start()
     else:
-        print('Saliendo del sistema de matricula')
+        clear()
+        print(new_title('[ Sistema de Matricula ]', 60, '■', True))
+        print(new_title('::  Gracias por usar el sistema  ::', LONG, '.', True))
+        print(new_title('[ Coded by: Roy Marquez :: romasi@gmail.com ]', LONG, '■'))
 
-print(new_title('Sistema de Matricula', 60, '░', True))
+## Datos quemados para hacer pruebas...
+def generate_data():
+        print (new_title('< Atención! Generando datos de prueba >', 60, '=', True))
+        # Agregar profes...
+        print('\n Agregando 3 profes...')
+        create_teacher('1', 'Eduardo Oviedo', 'Eduardo@gdg-pv.com', 'Python', teachers, teachers_names)
+        create_teacher('2', 'Alfredo Bonilla', 'Alfredo@gdg-pv.com', 'JS', teachers, teachers_names)
+        create_teacher('3', 'Francisco Campos', 'Francisco@gdg-pv.com', 'Kotlin', teachers, teachers_names)
+        print('\n\t Se agregaron los profes: Eduardo, Alfredo y Francisco! \n')
+        pause()
+
+        # Agregar estudiantes...
+        create_student('4', 'Roy Marquez', 'roym@server.net', 'Python', students)
+        create_student('5', 'Marjorie AF', 'mafm@mail.net', 'Python', students)
+        create_student('6', 'Jensy Salazar', 'jensy-s@the.mail', 'Python', students)
+        create_student('7', 'Mario Segura', 'msegura@coldmail.com', 'Python', students)
+        create_student('8', 'Doriam Díaz', 'ddiaz@webserver.fm', 'Python', students)
+        create_student('9', 'Emily Valencia', 'eval@freemail.us', 'Kotlin', students)
+        create_student('10', 'Alexa Torres', 'alexa_t55@mmail.svr', 'JS', students)
+        create_student('11', 'Adriana Naranjo', 'adri.naranjo@mail.it', 'JS', students)
+        create_student('12', 'Edson García', 'edgarcia@send.it', 'JS', students)
+        print('\n\t Se agregarón los estudiantes: Roy, Marjorie, Jensy, Mario, Doriam, Emily, Alexa, Adriana y Edson!\n')
+        pause()
+        
+        # Crear Grupos vacios
+        def create_test_group(c, l, w, groups):
+            free_letters = free_letters_by_course.get(c)
+            taken_letters = taken_letters_by_course.get(c)
+            
+            result = create_group(c, l, w, groups)
+            free_letters.remove(l)
+            taken_letters.add(l)
+            groups_labels.append(c +'-'+ l )
+            return result
+        
+        print('\n Agregando grupos...\n')
+        
+        print('\t' + create_test_group('Python', 'A', 'Lunes', groups) + ' ✔')
+        print('\t' + create_test_group('Python', 'B', 'Martes', groups) + ' ✔')
+        print('\t' + create_test_group('Kotlin', 'A', 'Miercoles', groups) + ' ✔')
+        print('\t' + create_test_group('JS', 'A', 'Jueves', groups) + ' ✔')
+        print('\t' + create_test_group('JS', 'B', 'Viernes', groups) + ' ✔')
+        
+        print('\n\tSe agregarón 5 grupos vacíos!\n')
+        pause()
+
 start()

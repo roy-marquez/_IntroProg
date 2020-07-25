@@ -6,16 +6,15 @@ from entities import Student
 
 # Crear estudiante
 def create_student(id_num,  name, email, course, students):
-    '''crea y agrega un estudiante a la lista de profes que recibe como parametro'''
+    '''crea y agrega un estudiante a la lista de estudiantes que recibe como parametro'''
     student = Student(id_num, name, email, course)
     students.append(student)
 
 # Leer estudiante
 def read_student(id_num, students):
-    '''regresa una cadena con los datos del profe: nombre y curso'''
-
-    for t in students:
-        if t.id_num == id_num:
+    '''regresa una cadena con los datos del estudiante'''
+    for s in students:
+        if s.id_num == id_num:
             return ('''
                 >> Datos del estudiante:
                     Id Num: {}
@@ -23,25 +22,26 @@ def read_student(id_num, students):
                     email: {}
                     Curso: {}
 
-            '''.format(t.id_num, t.name, t.email, t.course))
+            '''.format(s.id_num, s.name, s.email, s.course))
 
 #Actualizar estudiante
 def update_student(id_num, students, courses):
+    '''Actualiza los datos de un estdiante'''
     found= False
-    for t in students:
-        if t.id_num == id_num:
+    for s in students:
+        if s.id_num == id_num:
             found = True
-            print('>>Nombre actual: ', t.name)
+            print('>>Nombre actual: ', s.name)
             if (prop_update('nombre')):
-                t.name = input('Ingrese nuevo nombre del estudiante: ')
+                s.name = input('Ingrese nuevo nombre del estudiante: ')
 
-            print('>>Email actual: ', t.email)
+            print('>>Email actual: ', s.email)
             if (prop_update('email')):
-                t.email = input('Ingrese nuevo email del estudiante: ')
+                s.email = input('Ingrese nuevo email del estudiante: ')
             
-            print('>>Curso actual: ', t.course)
+            print('>>Curso actual: ', s.course)
             if (prop_update('course')):
-                t.course = ask_course(courses)
+                s.course = ask_course(courses)
             
             print ('\nActualización completa... ', read_student(id_num, students))    
     
@@ -52,8 +52,8 @@ def update_student(id_num, students, courses):
 def delete_student(id_num, students):
     found = False
     index = 0
-    for t in students:
-        if t.id_num == id_num:
+    for s in students:
+        if s.id_num == id_num:
             found = True
             break
         index += 1

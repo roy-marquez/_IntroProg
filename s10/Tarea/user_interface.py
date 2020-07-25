@@ -14,7 +14,7 @@ def prop_update (prop):
     else:
         return False
 
-# Funcion que verifica si un str que recibe como paremetro
+# Funcion que verifica si un str que recibe como paremetro y
 # retorna true, si el str puede representar un entero positivo
 def is_positive_integer(user_str):
     '''Función que determina si un string contiene unicamente carácteres numéricos'''
@@ -27,7 +27,11 @@ def is_positive_integer(user_str):
     return is_int
 
 def new_title(title, long, char, upper=False):
-    title = ' ' + title +  ' '
+    '''Funcion que imprime en pantalla un título (title) que recibe por parámetro
+    lo centra en una cadena de longitud (long), rellena los costados con repeticiones
+    de un carácter (char) y convierte a mayusculas (upper) el título de manera opcional
+    '''
+    #title = ' ' + title +  ' '
     if upper:
         title = title.upper()
     if (len(title) + 6 > long):
